@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="main-login">
+        <div class="left-login">
+          <h1>Sistema de Gestão de Clientes </h1>
+          <img src="{% static 'css/img/person-working.svg' %}" class="left-login-image" alt="Pessoa trabalhando">
+        </div>
+        <form action="submit", method="POST"> {% csrf_token %}
+            <div class="right-login">
+                <div class="card-login">
+                    <h1>LOGIN</h1>
+                    <div class="textfield">
+                        <label for="usuario">Usuário</label>
+                        <input type="text" name="username" placeholder="Usuário">
+                    </div>
+                    <div class="textfield">
+                        <label for="password">Senha</label>
+                        <input type="password" name="password" placeholder="Senha">
+                    </div>
+                    <button class="btn-login">Acessar</button>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-danger" style="color:white">{{message}}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+      </div>
+</body>
+</html>

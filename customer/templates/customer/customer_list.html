@@ -1,0 +1,69 @@
+{% extends "model-page.html" %}
+
+{% block content %}
+
+    <h1>Clientes</h1>
+
+    <a href="{% url "customer:customer-create" %}">
+       <button type="button" class="btn btn-success" style="float: right; margin-bottom:10px;">Adicionar</button>
+    </a>
+    <form>
+        <div class="form-group mb-1" >
+            <input class="form-control" type="text" name="name" placeholder="Buscar por nome...">
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+
+    <table class="table mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Nome</th>
+                <th>Cidade</th>
+                <th>Telefone</th>
+                <th>Email</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customer_list%}
+                <tr>
+                    <td>{{customer.get_full_name}}</td>
+                    <td>{{customer.get_full_city}}</td>
+                    <td>{{customer.get_full_phone_number}}</td>
+                    <td>{{customer.email}}</td>
+                    <td>
+                        <form method="POST" action="{{ customer.get_delete_url }}">{% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Excluir</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="GET" action="{{customer.get_absolute_url}}">{% csrf_token %}
+                            <button type="submit" class="btn btn-info">Editar</button></td>
+                        </form>
+                    </td>   
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" 
+                href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+        {% else%}
+        <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
+        {% endif %} 
+
+        {% for object in page_obj.paginator.page_range %}
+            <li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+        {% endfor %}    
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" 
+            href="?page={{ page_obj.next_page_number }}">Próximo</a></li>
+        {% else%}
+        <li class="page-item disabled"><a class="page-link" href="#">Próximo</a></li>
+        {% endif %} 
+    </ul>
+     
+{% endblock %}
